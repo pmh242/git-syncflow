@@ -6,27 +6,38 @@ Stateless Git workflow for staying in sync across machines.
 
 ## Requirements
 
-| Platform | Support |
-|----------|---------|
-| macOS | Works out of the box |
-| Linux | Works out of the box |
-| Windows (Git Bash or WSL) | Supported |
-| Windows (PowerShell / CMD) | Not supported |
+| Platform | Installer | Support |
+|----------|-----------|---------|
+| macOS | `setup.sh` | Works out of the box |
+| Linux | `setup.sh` | Works out of the box |
+| Windows — PowerShell | `setup.ps1` | Supported |
+| Windows — Git Bash or WSL | `setup.sh` | Supported |
+| Windows — CMD | — | Not supported |
 
 ---
 
 ## Install
 
+**macOS / Linux**
 ```sh
 git clone https://github.com/pmh242/git-syncflow.git
 cd git-syncflow
-chmod +x setup.sh
 ./setup.sh
 ```
 
-This symlinks `git/.gitconfig.aliases` to `~/.gitconfig.aliases` and registers it via `git config --global --add include.path`.
+**Windows — PowerShell**
+```powershell
+git clone https://github.com/pmh242/git-syncflow.git
+cd git-syncflow
+powershell -ExecutionPolicy Bypass -File .\setup.ps1
+```
 
-On Windows, run this from **Git Bash** or **WSL** — not PowerShell or CMD.
+**Windows — Git Bash or WSL**
+```sh
+git clone https://github.com/pmh242/git-syncflow.git
+cd git-syncflow
+./setup.sh
+```
 
 ---
 
@@ -74,4 +85,6 @@ git gsyncfull
 
 ## How it works
 
-All aliases are defined in `git/.gitconfig.aliases` as a standard Git `[alias]` block. `setup.sh` symlinks this file to `~/.gitconfig.aliases` and adds it to your global Git config via `include.path`. No shell configuration is modified.
+All aliases are defined in `git/.gitconfig.aliases` as a standard Git `[alias]` block. Both installers copy or symlink this file to `~/.gitconfig.aliases` and register it via `git config --global --add include.path`. No shell configuration is modified.
+
+`setup.sh` creates a symlink so local edits to the repo are reflected immediately. `setup.ps1` copies the file because creating symlinks on Windows requires administrator privileges.

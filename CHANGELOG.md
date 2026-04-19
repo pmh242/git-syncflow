@@ -4,6 +4,25 @@ All notable changes to this project will be documented here.
 
 ---
 
+## [1.0.2] — 2026-04-19
+
+### Added
+
+- `setup.ps1` — native Windows PowerShell installer; copies `git/.gitconfig.aliases` to `~/.gitconfig.aliases` and registers it via `git config --global --add include.path`
+
+### Changed
+
+- README Install section split into per-platform blocks (macOS/Linux, Windows PowerShell, Windows Git Bash/WSL)
+- README Requirements table updated: PowerShell now supported; CMD remains unsupported
+- README How it works updated to document both installers and explain the symlink vs copy difference
+
+### Notes
+
+- macOS and Linux continue to use `setup.sh`
+- Git aliases are unchanged; they work on Windows via Git for Windows' bundled `sh.exe`
+
+---
+
 ## [1.0.1] — 2026-04-19
 
 ### Added
