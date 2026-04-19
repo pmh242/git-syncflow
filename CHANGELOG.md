@@ -4,6 +4,29 @@ All notable changes to this project will be documented here.
 
 ---
 
+## [1.0.3] — 2026-04-19
+
+### Added
+
+- `setup.cmd` — native Windows CMD installer; thin wrapper that delegates to `setup.ps1`
+- `setup.sh` error logging via ERR trap: on any install-step failure, writes the failed command to `install-error.log` and prints a clear message
+
+### Changed
+
+- README Requirements table updated: CMD now supported via `setup.cmd`
+- README Install section now includes Windows CMD instructions
+- README How it works updated to document all three installers
+- README Troubleshooting updated to cover all installers
+
+### Notes
+
+- `setup.sh` remains the installer for macOS, Linux, Git Bash, and WSL
+- `setup.ps1` remains the installer for PowerShell
+- `setup.cmd` is a thin wrapper for Command Prompt — all error logging is handled by `setup.ps1`
+- Git aliases are unchanged
+
+---
+
 ## [1.0.2] — 2026-04-19
 
 ### Added

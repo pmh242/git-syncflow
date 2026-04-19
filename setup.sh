@@ -7,6 +7,7 @@ if ! command -v git >/dev/null 2>&1; then
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG_FILE="$SCRIPT_DIR/install-error.log"
 ALIASES_SRC="$SCRIPT_DIR/git/.gitconfig.aliases"
 ALIASES_DEST="$HOME/.gitconfig.aliases"
 
@@ -14,6 +15,15 @@ if [ ! -f "$ALIASES_SRC" ]; then
   echo "Error: $ALIASES_SRC not found." >&2
   exit 1
 fi
+
+_on_error() {
+  {
+    echo "Installation failed."
+    echo "Failed command: $BASH_COMMAND"
+  } > "$LOG_FILE"
+  echo "Installation failed. See install-error.log for details." >&2
+}
+trap '_on_error' ERR
 
 # Symlink (idempotent — replace existing symlink or file)
 if [ -L "$ALIASES_DEST" ] && [ "$(readlink "$ALIASES_DEST")" = "$ALIASES_SRC" ]; then

@@ -12,7 +12,7 @@ Stateless Git workflow for staying in sync across machines.
 | Linux | `setup.sh` | Works out of the box |
 | Windows — PowerShell | `setup.ps1` | Supported |
 | Windows — Git Bash or WSL | `setup.sh` | Supported |
-| Windows — CMD | — | Not supported |
+| Windows — CMD | `setup.cmd` | Supported |
 
 ---
 
@@ -30,6 +30,13 @@ cd git-syncflow
 git clone https://github.com/pmh242/git-syncflow.git
 cd git-syncflow
 powershell -ExecutionPolicy Bypass -File .\setup.ps1
+```
+
+**Windows — CMD**
+```bat
+git clone https://github.com/pmh242/git-syncflow.git
+cd git-syncflow
+setup.cmd
 ```
 
 **Windows — Git Bash or WSL**
@@ -87,4 +94,10 @@ git gsyncfull
 
 All aliases are defined in `git/.gitconfig.aliases` as a standard Git `[alias]` block. Both installers copy or symlink this file to `~/.gitconfig.aliases` and register it via `git config --global --add include.path`. No shell configuration is modified.
 
-`setup.sh` creates a symlink so local edits to the repo are reflected immediately. `setup.ps1` copies the file because creating symlinks on Windows requires administrator privileges.
+`setup.sh` creates a symlink so local edits to the repo are reflected immediately. `setup.ps1` and `setup.cmd` copy the file because creating symlinks on Windows requires administrator privileges. `setup.cmd` is a thin wrapper that delegates to `setup.ps1`.
+
+---
+
+## Troubleshooting
+
+If installation fails, check `install-error.log` in the repo folder for error details. All installers write to this file on failure.
