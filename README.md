@@ -18,7 +18,7 @@ Stateless Git workflow for staying in sync across machines.
 ## Install
 
 ```sh
-git clone https://github.com/YOUR_USERNAME/git-syncflow.git
+git clone https://github.com/pmh242/git-syncflow.git
 cd git-syncflow
 chmod +x setup.sh
 ./setup.sh
