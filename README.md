@@ -75,6 +75,19 @@ Note: `gsync` and `gsyncfull` will overwrite local changes and remove files.
 - `git gcheck` - check status
 - `git gupdate` - update safely
 
+## Update
+
+Use this if you already installed Git Syncflow and want to update it to the latest version.
+
+Go to your git-syncflow folder, pull the latest changes, and run the installer again.
+
+### Mac
+```sh
+git pull
+./setup.sh
+git ghelp
+```
+
 ## Uninstall
 
 Mac: run this in Terminal.
