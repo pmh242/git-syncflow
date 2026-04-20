@@ -12,6 +12,8 @@ Git Syncflow adds a few short Git commands:
 
 ## Quick Install
 
+Use this if you want to install everything in one step.
+
 **Mac**
 ```sh
 git clone https://github.com/pmh242/git-syncflow.git && cd git-syncflow && chmod +x setup.sh && ./setup.sh && git ghelp
@@ -28,6 +30,8 @@ git ghelp
 ```
 
 ## Install
+
+Use this if you prefer to install step by step.
 
 ### Mac
 1. Install
@@ -67,6 +71,8 @@ Note: `gsync` and `gsyncfull` will overwrite local changes and remove files.
 - `git gupdate` - update safely
 
 ## Uninstall
+
+Use this if you want to remove Git Syncflow from your computer.
 
 ### Mac
 ```sh
