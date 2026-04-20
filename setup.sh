@@ -7,39 +7,31 @@ if ! command -v git >/dev/null 2>&1; then
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LOG_FILE="$SCRIPT_DIR/install-error.log"
 ALIASES_SRC="$SCRIPT_DIR/git/.gitconfig.aliases"
 ALIASES_DEST="$HOME/.gitconfig.aliases"
+INCLUDE_VALUE="~/.gitconfig.aliases"
 
 if [ ! -f "$ALIASES_SRC" ]; then
   echo "Error: $ALIASES_SRC not found." >&2
   exit 1
 fi
 
-_on_error() {
-  {
-    echo "Installation failed."
-    echo "Failed command: $BASH_COMMAND"
-  } > "$LOG_FILE"
-  echo "Installation failed. See install-error.log for details." >&2
-}
-trap '_on_error' ERR
+cp -f "$ALIASES_SRC" "$ALIASES_DEST"
 
-# Symlink (idempotent — replace existing symlink or file)
-if [ -L "$ALIASES_DEST" ] && [ "$(readlink "$ALIASES_DEST")" = "$ALIASES_SRC" ]; then
-  echo "Symlink already up to date: $ALIASES_DEST"
+if git config --global --get-all include.path 2>/dev/null | grep -Fxq "$INCLUDE_VALUE"; then
+  INCLUDE_REGISTERED="YES"
 else
-  ln -sf "$ALIASES_SRC" "$ALIASES_DEST"
-  echo "Symlinked: $ALIASES_DEST -> $ALIASES_SRC"
-fi
-
-# Register with global git config (idempotent, safe with multiple include.path entries)
-if git config --global --get-all include.path 2>/dev/null | grep -qF "$HOME/.gitconfig.aliases"; then
-  echo "Git include.path already configured."
-else
-  git config --global --add include.path ~/.gitconfig.aliases
-  echo "Git include.path set to ~/.gitconfig.aliases"
+  git config --global --add include.path "$INCLUDE_VALUE"
+  INCLUDE_REGISTERED="YES"
 fi
 
 echo ""
-echo "Done. Run 'git ghelp' to see available commands."
+echo "Git Syncflow installed"
+echo "Aliases file: $ALIASES_DEST"
+echo "Include registered: $INCLUDE_REGISTERED"
+echo "Available commands:"
+echo "  gcheck"
+echo "  gupdate"
+echo "  gsync"
+echo "  gsyncfull"
+echo "  ghelp"

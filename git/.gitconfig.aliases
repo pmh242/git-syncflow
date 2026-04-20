@@ -1,34 +1,68 @@
 [alias]
 	gcheck = "!f() { \
-		REMOTE=$(git rev-parse @{u} 2>/dev/null || echo ''); \
-		if [ -z \"$REMOTE\" ]; then \
-			echo 'No upstream configured.'; \
+		git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { \
+			echo 'Not a git repository'; \
+			return 1; \
+		}; \
+		UPSTREAM=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null || true); \
+		if [ -z \"$UPSTREAM\" ]; then \
+			echo 'No upstream branch set'; \
 			return 1; \
 		fi; \
 		git fetch --quiet; \
-		AHEAD=$(git rev-list --count @{u}..HEAD); \
-		BEHIND=$(git rev-list --count HEAD..@{u}); \
+		AHEAD=$(git rev-list --count \"$UPSTREAM\"..HEAD); \
+		BEHIND=$(git rev-list --count HEAD..\"$UPSTREAM\"); \
 		if [ \"$AHEAD\" -eq 0 ] && [ \"$BEHIND\" -eq 0 ]; then \
-			echo '✓ up to date (↑ 0 | ↓ 0)'; \
+			echo 'up to date (ahead 0 | behind 0)'; \
 		else \
-			echo \"↑ ahead: $AHEAD | ↓ behind: $BEHIND\"; \
+			echo \"ahead: $AHEAD | behind: $BEHIND\"; \
 		fi; \
 	}; f"
 
-	gupdate = "!git fetch && git pull --ff-only"
+	gupdate = "!f() { \
+		git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { \
+			echo 'Not a git repository'; \
+			return 1; \
+		}; \
+		git rev-parse --abbrev-ref --symbolic-full-name @{u} >/dev/null 2>&1 || { \
+			echo 'No upstream branch set'; \
+			return 1; \
+		}; \
+		git fetch && git pull --ff-only; \
+	}; f"
 
 	gsync = "!f() { \
+		git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { \
+			echo 'Not a git repository'; \
+			return 1; \
+		}; \
 		UPSTREAM=${1:-'@{u}'}; \
+		if [ \"$UPSTREAM\" = '@{u}' ]; then \
+			git rev-parse --abbrev-ref --symbolic-full-name @{u} >/dev/null 2>&1 || { \
+				echo 'No upstream branch set'; \
+				return 1; \
+			}; \
+		fi; \
 		git fetch --all && \
-		git reset --hard $UPSTREAM && \
+		git reset --hard \"$UPSTREAM\" && \
 		git clean -fd; \
 	}; f"
 
 	gsyncfull = "!f() { \
+		git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { \
+			echo 'Not a git repository'; \
+			return 1; \
+		}; \
 		UPSTREAM=${1:-'@{u}'}; \
+		if [ \"$UPSTREAM\" = '@{u}' ]; then \
+			git rev-parse --abbrev-ref --symbolic-full-name @{u} >/dev/null 2>&1 || { \
+				echo 'No upstream branch set'; \
+				return 1; \
+			}; \
+		fi; \
 		git fetch --all && \
-		git reset --hard $UPSTREAM && \
+		git reset --hard \"$UPSTREAM\" && \
 		git clean -fdx; \
 	}; f"
 
-	ghelp = "!printf 'git-syncflow aliases:\\n  gcheck     — show ahead/behind status vs upstream\\n  gupdate    — fetch + pull with fast-forward only\\n  gsync      — fetch + reset --hard upstream + clean -fd (removes untracked files)\\n  gsyncfull  — same as gsync but also removes ignored files (clean -fdx)\\n  ghelp      — show this help\\n'"
+	ghelp = "!printf 'git-syncflow aliases:\\n  gcheck     - show ahead/behind status vs upstream\\n  gupdate    - fetch + pull with fast-forward only\\n  gsync      - fetch + reset --hard upstream + clean -fd (removes untracked files)\\n  gsyncfull  - same as gsync but also removes ignored files (clean -fdx)\\n  ghelp      - show this help\\n'"
