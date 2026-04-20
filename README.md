@@ -6,9 +6,9 @@ Git aliases for checking, updating, and syncing a repo from its upstream branch.
 
 Git Syncflow adds a few short Git commands:
 
-- Check if your branch is ahead or behind
-- Update safely when your branch can fast-forward
-- Sync your branch to the upstream branch
+- Check if your project is up to date or not
+- Update your project safely with the latest changes
+- Reset your project to match the online version if needed
 
 ## Quick Install
 
@@ -85,6 +85,13 @@ Go to your git-syncflow folder, pull the latest changes, and run the installer a
 ```sh
 git pull
 ./setup.sh
+git ghelp
+```
+
+### Windows
+```powershell
+git pull
+.\setup.ps1
 git ghelp
 ```
 
