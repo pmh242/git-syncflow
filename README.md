@@ -92,6 +92,9 @@ git ghelp
 ```powershell
 git pull
 .\setup.ps1
+```
+Verify in Git Bash:
+```sh
 git ghelp
 ```
 
