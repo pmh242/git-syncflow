@@ -13,6 +13,8 @@ Git Syncflow adds a few short Git commands:
 ## Quick Install
 
 Use this if you want to install everything in one step.
+Mac: run this in Terminal.
+Windows: run this in PowerShell, then verify in Git Bash.
 
 **Mac**
 ```sh
@@ -30,6 +32,9 @@ git ghelp
 ```
 
 ## Install
+
+Mac: use Terminal.
+Windows: use PowerShell, then verify in Git Bash.
 
 Use this if you prefer to install step by step.
 
@@ -71,6 +76,9 @@ Note: `gsync` and `gsyncfull` will overwrite local changes and remove files.
 - `git gupdate` - update safely
 
 ## Uninstall
+
+Mac: run this in Terminal.
+Windows: run this in PowerShell.
 
 Use this if you want to remove Git Syncflow from your computer.
 
